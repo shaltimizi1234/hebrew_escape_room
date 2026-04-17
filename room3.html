@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המירוץ למילה - חדר 3</title>
+    <style>
+        :root {
+            --primary-red: #d32f2f;
+            --dark-red: #8e0000;
+            --light-red: #ff6659;
+            --bg-color: #ffebee;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-red) 0%, var(--primary-red) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            border-top: 6px solid var(--dark-red);
+        }
+
+        h1 { 
+            color: var(--dark-red); 
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .instructions {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .question { 
+            margin-bottom: 25px; 
+            padding: 15px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            border-right: 4px solid var(--primary-red);
+        }
+
+        .question p {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-top: 0;
+        }
+
+        .blank { 
+            font-weight: bold; 
+            color: var(--primary-red); 
+        }
+
+        select { 
+            padding: 10px; 
+            margin-top: 10px; 
+            font-size: 16px; 
+            width: 100%; 
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            font-family: inherit;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        input[type="text"] { 
+            padding: 10px; 
+            font-size: 16px; 
+            width: 100%; 
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 5px rgba(211, 47, 47, 0.3);
+        }
+
+        button {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s, transform 0.1s;
+            margin-top: 10px;
+        }
+
+        button:hover { 
+            background-color: var(--dark-red); 
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #result, #lockError {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success { 
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+
+        .error { 
+            background-color: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+
+        .code-box {
+            font-size: 32px;
+            color: var(--dark-red);
+            letter-spacing: 5px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* תוספות עבור הנגן צליל */
+        .audio-message {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #155724;
+        }
+        
+        .audio-message p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* עיצוב ספציפי למסך הנעילה */
+        #lock-screen {
+            text-align: center;
+        }
+
+        #roomCodeInput {
+            text-align: center;
+            font-size: 24px;
+            letter-spacing: 3px;
+            width: 60%;
+            margin: 15px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="lock-screen">
+    <h1>עצרו!</h1>
+    <div class="instructions">
+        כדי להיכנס לחדר מספר 3, עליכם להזין את הקוד שקיבלתם בסיום חדר מספר 2.
+    </div>
+    <input type="text" id="roomCodeInput" placeholder="הזינו קוד כאן...">
+    <button onclick="checkEntryCode()">היכנסו לחדר</button>
+    <div id="lockError" class="error">הקוד שגוי. נסו שוב!</div>
+</div>
+
+<div class="container" id="game-content" style="display: none;">
+    <h1>חדר מספר 3: קשרים לוגיים</h1>
+    <div class="instructions">
+        פתרו את החידות הבאות כדי לחשוף את המספר הסודי שיעזור לכם להתקדם לשלב הבא.
+    </div>
+
+    <div class="question">
+        <p><span class="blank">_________</span> אנו צדיקי הדור, אנחנו מקשיבים למרדכי רבנו במסירות ובדקדקנות.</p>
+        <select id="q1">
+            <option value="">-- בחרו מילת קישור --</option>
+            <option value="למרות ש">למרות ש</option>
+            <option value="היות ש">היות ש</option>
+            <option value="כדי ש">כדי ש</option>
+            <option value="אף על פי ש">אף על פי ש</option>
+        </select>
+    </div>
+
+    <div class="question">
+        <p>למרות מה שמרדכי לימדנו, אוהד בוזגלו הוא זה שבאמת הוציאנו ממצרים.<br><br>מהו הקשר הלוגי במשפט זה?</p>
+        <select id="q2">
+            <option value="">-- בחרו קשר לוגי --</option>
+            <option value="סיבה">סיבה</option>
+            <option value="ויתור">ויתור</option>
+            <option value="השוואה">השוואה</option>
+            <option value="זמן">זמן</option>
+        </select>
+    </div>
+
+    <div class="question">
+        <p>מרדכי הינו אדם המשויכים לו משפטים ייחודיים ומשעשעים, <span class="blank">_________</span> "אתה איתי או מהיר?".</p>
+        <select id="q3">
+            <option value="">-- בחרו מילת קישור --</option>
+            <option value="לכן">לכן</option>
+            <option value="לדוגמה">לדוגמה</option>
+            <option value="בניגוד לכך">בניגוד לכך</option>
+            <option value="כמו כן">כמו כן</option>
+        </select>
+    </div>
+
+    <button onclick="checkAnswers()">בדקו את התשובות</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    // פונקציה לבדיקת קוד הכניסה לחדר
+    function checkEntryCode() {
+        const codeInput = document.getElementById('roomCodeInput').value.trim();
+        const lockError = document.getElementById('lockError');
+        
+        if (codeInput === '924') {
+            // הקוד נכון - מסתירים את מסך הנעילה ומציגים את המשחק
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('game-content').style.display = 'block';
+        } else {
+            // הקוד שגוי - מציגים שגיאה
+            lockError.style.display = 'block';
+        }
+    }
+
+    function checkAnswers() {
+        // משיכת התשובות מהטופס
+        const a1 = document.getElementById('q1').value;
+        const a2 = document.getElementById('q2').value;
+        const a3 = document.getElementById('q3').value;
+        
+        const resultDiv = document.getElementById('result');
+        
+        // בדיקה האם כל השדות מולאו
+        if (!a1 || !a2 || !a3) {
+            resultDiv.className = 'error';
+            resultDiv.innerHTML = 'אנא ענו על כל השאלות לפני הבדיקה.';
+            resultDiv.style.display = 'block';
+            return;
+        }
+
+        // בדיקת התשובות הנכונות
+        if (a1 === 'היות ש' && a2 === 'ויתור' && a3 === 'לדוגמה') {
+            resultDiv.className = 'success';
+            resultDiv.innerHTML = `
+                כל הכבוד! הצלחתם לפצח את החדר.<br>
+                המספר שלכם הוא:<span class="code-box">481</span>
+                <div class="audio-message">
+                    <p>🔊 יש לכם הודעה מיוחדת ממרדכי!</p>
+                    <audio controls autoplay style="width: 100%;">
+                        <source src="mordechaiRecord.mp4" type="audio/mp4">
+                        הדפדפן שלכם אינו תומך בהשמעת קבצי קול.
+                    </audio>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+        } else {
+            resultDiv.className = 'error';
+            resultDiv.innerHTML = 'חלק מהתשובות שגויות. נסו שוב!';
+            resultDiv.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>

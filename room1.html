@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המירוץ למילה - חדר 1</title>
+    <style>
+        :root {
+            --primary-red: #d32f2f;
+            --dark-red: #8e0000;
+            --light-red: #ff6659;
+            --bg-color: #ffebee;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-red) 0%, var(--primary-red) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            max-width: 650px;
+            width: 100%;
+            border-top: 6px solid var(--dark-red);
+        }
+
+        h1 { 
+            color: var(--dark-red); 
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .instructions {
+            text-align: center;
+            font-size: 16px;
+            color: #444;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            line-height: 1.6;
+        }
+
+        .word-bank {
+            background-color: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--dark-red);
+            margin-bottom: 25px;
+            border: 1px dashed var(--primary-red);
+        }
+
+        .question { 
+            margin-bottom: 25px; 
+            padding: 15px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            border-right: 4px solid var(--primary-red);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .question p {
+            font-size: 18px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .highlight { 
+            font-weight: bold; 
+            color: var(--primary-red);
+            text-decoration: underline;
+        }
+
+        input[type="text"] { 
+            padding: 10px; 
+            font-size: 16px; 
+            width: 100%; 
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 5px rgba(211, 47, 47, 0.3);
+        }
+
+        button {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s, transform 0.1s;
+            margin-top: 15px;
+        }
+
+        button:hover { 
+            background-color: var(--dark-red); 
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success { 
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+
+        .error { 
+            background-color: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+
+        .code-box {
+            font-size: 32px;
+            color: var(--dark-red);
+            letter-spacing: 5px;
+            margin-top: 10px;
+            display: block;
+        }
+        
+        .audio-message {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #155724;
+        }
+        
+        .audio-message p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>חדר מספר 1: משלימים</h1>
+    
+    <div class="instructions">
+        במשפטים הבאים ישנם צירופים מודגשים. קראו היטב כל משפט והקלידו בתיבה את תפקידו התחבירי של החלק המודגש (משלים שם או משלים פועל).
+    </div>
+
+    <div class="word-bank">
+        אפשרויות הקלדה: לוואי | תמורה | משלים פועל
+    </div>
+
+    <div class="question">
+        <p>1. כרמית <span class="highlight">המורה המדהימה</span> הפתיעה את י'1 בערב פיצות מרנין.</p>
+        <input type="text" id="q1" placeholder="הקלידו כאן את התשובה...">
+    </div>
+
+    <div class="question">
+        <p>2. הכלב המתוק <span class="highlight">של כרמית</span> הינו חמוד עד לכדי צביטה בלחי.</p>
+        <input type="text" id="q2" placeholder="הקלידו כאן את התשובה...">
+    </div>
+
+    <div class="question">
+        <p>3. התלמידים רצים <span class="highlight">בזריזות יתרה</span> לשיעור לשון כדי לקבל את בואה של כרמית בחיוך גדול ורחב.</p>
+        <input type="text" id="q3" placeholder="הקלידו כאן את התשובה...">
+    </div>
+
+    <button onclick="checkAnswers()">בדקו את התשובות</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    function checkAnswers() {
+        // משיכת התשובות מהטופס וניקוי רווחים מיותרים בהתחלה ובסוף
+        const a1 = document.getElementById('q1').value.trim();
+        const a2 = document.getElementById('q2').value.trim();
+        const a3 = document.getElementById('q3').value.trim();
+        
+        const resultDiv = document.getElementById('result');
+        
+        // בדיקה האם כל השדות מולאו
+        if (!a1 || !a2 || !a3) {
+            resultDiv.className = 'error';
+            resultDiv.innerHTML = 'אנא ענו על כל השאלות לפני הבדיקה.';
+            resultDiv.style.display = 'block';
+            return;
+        }
+
+        // בדיקת התשובות הנכונות
+        if (a1 === 'תמורה' && a2 === 'לוואי' && a3 === 'משלים פועל') {
+            resultDiv.className = 'success';
+            // כאן הוספתי את נגן השמע עם הקובץ carmitRecord.mp4
+            resultDiv.innerHTML = `
+                מצוין! סיימתם בהצלחה את החדר הראשון.<br>
+                המספר שלכם הוא:<span class="code-box">637</span>
+                <div class="audio-message">
+                    <p>🔊 יש לכם הודעה מיוחדת מכרמית!</p>
+                    <audio controls autoplay style="width: 100%;">
+                        <source src="carmitRecord.mp4" type="audio/mp4">
+                        הדפדפן שלכם אינו תומך בהשמעת קבצי קול.
+                    </audio>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+        } else {
+            resultDiv.className = 'error';
+            resultDiv.innerHTML = 'חלק מהתשובות שגויות. ודאו שהקלדתם את חלק הדיבר בדיוק כפי שמופיע למעלה במחסן המילים.';
+            resultDiv.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>

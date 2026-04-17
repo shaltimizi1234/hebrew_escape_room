@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המירוץ למילה -  חדר 4</title>
+    <style>
+        :root {
+            --primary-red: #d32f2f;
+            --dark-red: #8e0000;
+            --light-red: #ff6659;
+            --bg-color: #ffebee;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-red) 0%, var(--primary-red) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            max-width: 650px;
+            width: 100%;
+            border-top: 6px solid var(--dark-red);
+        }
+
+        h1 { 
+            color: var(--dark-red); 
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .instructions {
+            text-align: center;
+            font-size: 16px;
+            color: #444;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            line-height: 1.6;
+        }
+
+        .instructions strong {
+            display: block;
+            font-size: 18px;
+            color: var(--primary-red);
+            margin-bottom: 8px;
+        }
+
+        .question { 
+            margin-bottom: 25px; 
+            padding: 15px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            border-right: 4px solid var(--primary-red);
+            line-height: 1.8;
+        }
+
+        .question p {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        select { 
+            padding: 8px; 
+            font-size: 16px; 
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            font-family: inherit;
+            color: var(--dark-red);
+            font-weight: bold;
+            margin: 0 5px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 5px rgba(211, 47, 47, 0.3);
+        }
+
+        input[type="text"] { 
+            padding: 10px; 
+            font-size: 16px; 
+            width: 100%; 
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 5px rgba(211, 47, 47, 0.3);
+        }
+
+        button {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s, transform 0.1s;
+            margin-top: 15px;
+        }
+
+        button:hover { 
+            background-color: var(--dark-red); 
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #result, #lockError {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success { 
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+
+        .error { 
+            background-color: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+
+        .code-box {
+            font-size: 32px;
+            color: var(--dark-red);
+            letter-spacing: 5px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* תוספות עבור הנגן צליל */
+        .audio-message {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #155724;
+        }
+        
+        .audio-message p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* עיצוב ספציפי למסך הנעילה */
+        #lock-screen {
+            text-align: center;
+        }
+
+        #roomCodeInput {
+            text-align: center;
+            font-size: 24px;
+            letter-spacing: 3px;
+            width: 60%;
+            margin: 15px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="lock-screen">
+    <h1>עצרו!</h1>
+    <div class="instructions">
+        כדי להיכנס לחדר מספר 4, עליכם להזין את הקוד שקיבלתם בסיום חדר מספר 3.
+    </div>
+    <input type="text" id="roomCodeInput" placeholder="הזינו קוד כאן...">
+    <button onclick="checkEntryCode()">היכנסו לחדר</button>
+    <div id="lockError" class="error">הקוד שגוי. נסו שוב!</div>
+</div>
+
+<div class="container" id="game-content" style="display: none;">
+    <h1>חדר מספר 4: אוצר מילים</h1>
+    
+    <div class="instructions">
+        <strong>ידעתם שישנן מילים שאפילו ענת, המורה להיסטוריה, לא מכירה?</strong>
+        בואו נבדוק עד כמה אתם מכירים את המילים העבריות התקניות! בחרו מהתפריט את הפירוש הלועזי או המוכר יותר לכל מילה מודגשת.
+    </div>
+
+    <div class="question">
+        <p>1. בעת חגיגות הכרזת העצמאות של מדינת ישראל, <strong>פתיתונים</strong> 
+            <select id="q1">
+                <option value="">-- בחרו --</option>
+                <option value="נצנצים">נצנצים</option>
+                <option value="קונפטי">קונפטי</option>
+                <option value="פאייטים">פאייטים</option>
+                <option value="זיקוקים">זיקוקים</option>
+            </select>
+        פוזרו בכל רחבי הארץ והפכו את שמיה לנוצצים וזוהרים.</p>
+    </div>
+
+    <div class="question">
+        <p>2. בתקופת מלחמת העולם השנייה, האמריקאיים גילו על מעשי הנאצ*ם, למרות ששירותי ה<strong>מרשתת</strong> 
+            <select id="q2">
+                <option value="">-- בחרו --</option>
+                <option value="טלוויזיה">טלוויזיה</option>
+                <option value="רדיו חובבים">רדיו חובבים</option>
+                <option value="אינטרנט">אינטרנט</option>
+                <option value="תקשורת לוויינית">תקשורת לוויינית</option>
+            </select>
+        לא היו קיימים באותה העת.</p>
+    </div>
+
+    <div class="question">
+        <p>3. בארץ מולדתו של הצורר ה*טלר, הומצאה ה<strong>כתיתה</strong> הפריכה 
+            <select id="q3a">
+                <option value="">-- בחרו --</option>
+                <option value="פשטידה">פשטידה</option>
+                <option value="קציצה">קציצה</option>
+                <option value="נקניקייה">נקניקייה</option>
+                <option value="שניצל">שניצל</option>
+            </select>
+        אותה אנו אוהבים לאכול בתוספת <strong>טוגנים</strong> זהובים
+            <select id="q3b">
+                <option value="">-- בחרו --</option>
+                <option value="קרוטונים">קרוטונים</option>
+                <option value="צ'יפס">צ'יפס</option>
+                <option value="פירורי לחם">פירורי לחם</option>
+                <option value="קרקרים">קרקרים</option>
+            </select>
+        .</p>
+    </div>
+
+    <button onclick="checkAnswers()">בדקו את התשובות</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    // פונקציה לבדיקת קוד הכניסה לחדר
+    function checkEntryCode() {
+        const codeInput = document.getElementById('roomCodeInput').value.trim();
+        const lockError = document.getElementById('lockError');
+        
+        if (codeInput === '481') {
+            // הקוד נכון - מסתירים את מסך הנעילה ומציגים את המשחק
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('game-content').style.display = 'block';
+        } else {
+            // הקוד שגוי - מציגים שגיאה
+            lockError.style.display = 'block';
+        }
+    }
+
+    function checkAnswers() {
+        const a1 = document.getElementById('q1').value;
+        const a2 = document.getElementById('q2').value;
+        const a3a = document.getElementById('q3a').value;
+        const a3b = document.getElementById('q3b').value;
+        
+        const resultDiv = document.getElementById('result');
+        
+        // בדיקה האם כל השדות מולאו
+        if (!a1 || !a2 || !a3a || !a3b) {
+            resultDiv.className = 'error';
+            resultDiv.innerHTML = 'אנא בחרו תשובה לכל המילים המודגשות לפני הבדיקה.';
+            resultDiv.style.display = 'block';
+            return;
+        }
+
+        // בדיקת התשובות הנכונות
+        if (a1 === 'קונפטי' && a2 === 'אינטרנט' && a3a === 'שניצל' && a3b === 'צ\'יפס') {
+            resultDiv.className = 'success';
+            resultDiv.innerHTML = `
+                אלופים! סיימתם בהצלחה את החדר הרביעי.<br>
+                המספר שלכם הוא:<span class="code-box">3366</span>
+                <div class="audio-message">
+                    <p>🔊 יש לכם הודעה מיוחדת מענת!</p>
+                    <audio controls autoplay style="width: 100%;">
+                        <source src="anatRecord.mp4" type="audio/mp4">
+                        הדפדפן שלכם אינו תומך בהשמעת קבצי קול.
+                    </audio>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+        } else {
+            resultDiv.className = 'error';
+            resultDiv.innerHTML = 'חלק מהתשובות שגויות. נסו שוב!';
+            resultDiv.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>

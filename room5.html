@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המירוץ למילה - חדר 5</title>
+    <style>
+        :root {
+            --primary-red: #d32f2f;
+            --dark-red: #8e0000;
+            --light-red: #ff6659;
+            --bg-color: #ffebee;
+            --text-color: #333;
+            --nav-bg: #2c3e50;
+            --nav-text: #ecf0f1;
+            --nav-accent: #27ae60;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-red) 0%, var(--primary-red) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            max-width: 650px;
+            width: 100%;
+            border-top: 6px solid var(--dark-red);
+        }
+
+        h1 { 
+            color: var(--dark-red); 
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .instructions {
+            text-align: center;
+            font-size: 16px;
+            color: #444;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .pun-highlight {
+            font-size: 1.3em;
+            color: var(--primary-red);
+            font-weight: 900;
+            text-decoration: underline;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* עיצוב אפליקציית הניווט */
+        .gps-container {
+            background-color: var(--nav-bg);
+            color: var(--nav-text);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .gps-header {
+            background-color: var(--nav-accent);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .nav-step {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            line-height: 1.8;
+            flex-wrap: wrap;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-left: 15px;
+            background-color: #34495e;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .gps-footer {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #f1c40f;
+            margin-top: 10px;
+        }
+
+        input[type="text"] { 
+            padding: 5px 10px; 
+            font-size: 16px; 
+            width: 120px; 
+            border: 2px solid var(--nav-accent);
+            border-radius: 5px;
+            background-color: white;
+            font-family: inherit;
+            font-weight: bold;
+            text-align: center;
+            margin: 0 5px;
+            color: #333;
+        }
+
+        select { 
+            padding: 5px 10px; 
+            font-size: 16px; 
+            cursor: pointer;
+            border: 2px solid #e74c3c;
+            border-radius: 5px;
+            background-color: white;
+            font-family: inherit;
+            color: #333;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(39, 174, 96, 0.8);
+        }
+
+        button {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        button:hover { 
+            background-color: var(--dark-red); 
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #result, #lockError {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success { 
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+
+        .error { 
+            background-color: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+
+        .code-box {
+            font-size: 32px;
+            color: var(--dark-red);
+            letter-spacing: 5px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* תוספות עבור הנגן צליל */
+        .audio-message {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #155724;
+        }
+        
+        .audio-message p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* עיצוב ספציפי למסך הנעילה */
+        #lock-screen {
+            text-align: center;
+        }
+
+        #roomCodeInput {
+            text-align: center;
+            font-size: 24px;
+            letter-spacing: 3px;
+            width: 60%;
+            margin: 15px auto;
+            display: block;
+            border: 2px solid var(--primary-red);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="lock-screen">
+    <h1>עצרו!</h1>
+    <div class="instructions">
+        כדי להיכנס לחדר מספר 5, עליכם להזין את הקוד שקיבלתם בסיום חדר מספר 4.
+    </div>
+    <input type="text" id="roomCodeInput" placeholder="הזינו קוד כאן...">
+    <button onclick="checkEntryCode()">היכנסו לחדר</button>
+    <div id="lockError" class="error">הקוד שגוי. נסו שוב!</div>
+</div>
+
+<div class="container" id="game-content" style="display: none;">
+    <h1>חדר מספר 5: מין ומספר</h1>
+    
+    <div class="instructions">
+        מירב צריכה להגיע לחדר הלידה במהירות ה<span class="pun-highlight">מירב</span>ית (במסגרת החוק, כמובן 😉).<br>
+        עזרו לה להגיע בבטחה תוך שמירה על כללי הדקדוק ב-GPS! הקלידו את המספרים במילים ובחרו את המין הנכון מהתפריטים.
+    </div>
+
+    <div class="gps-container">
+        <div class="gps-header">הכל מוכן - בואי נצא לדרך 💪🏼</div>
+
+        <div class="nav-step">
+            <span class="nav-icon">↪️</span>
+            <div>
+                בעוד <input type="text" id="q1" placeholder="10 במילים"> מטרים, פני ימינה.
+            </div>
+        </div>
+
+        <div class="nav-step">
+            <span class="nav-icon">🔄</span>
+            <div>
+                בכיכר 
+                <select id="q2a">
+                    <option value="">--בחרו--</option>
+                    <option value="הקרוב">הקרוב</option>
+                    <option value="הקרובה">הקרובה</option>
+                </select>
+                , צאי ביציאה ה- <input type="text" id="q2b" placeholder="1 במילים">.
+            </div>
+        </div>
+
+        <div class="nav-step">
+            <span class="nav-icon">⬆️</span>
+            <div>
+                בצומת 
+                <select id="q3">
+                    <option value="">--בחרו--</option>
+                    <option value="הבא">הבא</option>
+                    <option value="הבאה">הבאה</option>
+                </select>
+                , המשכי ישר.
+            </div>
+        </div>
+
+        <div class="gps-footer">הגעת ליעד 😎😎😎</div>
+    </div>
+
+    <button onclick="checkAnswers()">הגענו לבית החולים!</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    // פונקציה לבדיקת קוד הכניסה לחדר
+    function checkEntryCode() {
+        const codeInput = document.getElementById('roomCodeInput').value.trim();
+        const lockError = document.getElementById('lockError');
+        
+        if (codeInput === '3366') {
+            // הקוד נכון - מסתירים את מסך הנעילה ומציגים את המשחק
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('game-content').style.display = 'block';
+        } else {
+            // הקוד שגוי - מציגים שגיאה
+            lockError.style.display = 'block';
+        }
+    }
+
+    function checkAnswers() {
+        // משיכת הערכים וניקוי רווחים מיותרים
+        const a1 = document.getElementById('q1').value.trim();
+        const a2a = document.getElementById('q2a').value;
+        const a2b = document.getElementById('q2b').value.trim();
+        const a3 = document.getElementById('q3').value;
+        
+        const resultDiv = document.getElementById('result');
+        
+        // בדיקה שכל השדות מולאו
+        if (!a1 || !a2a || !a2b || !a3) {
+            resultDiv.className = 'error';
+            resultDiv.innerHTML = 'רגע! ה-GPS מחשב מסלול מחדש... אנא השלימו את כל ההוראות כדי להמשיך.';
+            resultDiv.style.display = 'block';
+            return;
+        }
+
+        // בדיקת התשובות
+        const isA1Correct = (a1 === 'עשרה');
+        const isA2aCorrect = (a2a === 'הקרובה');
+        const isA2bCorrect = (a2b === 'ראשונה' || a2b === 'הראשונה');
+        const isA3Correct = (a3 === 'הבא');
+
+        if (isA1Correct && isA2aCorrect && isA2bCorrect && isA3Correct) {
+            resultDiv.className = 'success';
+            resultDiv.innerHTML = `
+                מזל טוב! מירב הגיעה בשלום וילדה בן זכר! 👶🍼<br>
+                המספר שלכם הוא:<span class="code-box">757</span>
+                <div class="audio-message">
+                    <p>🔊 מירב השאירה לכם הודעה!</p>
+                    <audio controls autoplay style="width: 100%;">
+                        <source src="meiravRecord.mp4" type="audio/mp4">
+                        הדפדפן שלכם אינו תומך בהשמעת קבצי קול.
+                    </audio>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+        } else {
+            resultDiv.className = 'error';
+            resultDiv.innerHTML = 'אוי לא, עשיתם פניית פרסה דקדוקית! בדקו את המין והמספר של כל מילה ונסו שוב.';
+            resultDiv.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>

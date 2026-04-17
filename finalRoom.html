@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המירוץ למילה - חדר הסיום</title>
+    <style>
+        :root {
+            --primary-red: #d32f2f;
+            --dark-red: #8e0000;
+            --light-red: #ff6659;
+            --gold: #ffd700;
+            --bg-color: #ffebee;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-red) 0%, var(--primary-red) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            max-width: 650px;
+            width: 100%;
+            border-top: 6px solid var(--gold);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 { 
+            color: var(--dark-red); 
+            margin-bottom: 10px;
+            font-size: 34px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .instructions {
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            border: 2px dashed var(--primary-red);
+            line-height: 1.6;
+        }
+
+        .highlight { 
+            font-weight: bold; 
+            color: var(--primary-red);
+            font-size: 20px;
+        }
+
+        .gematria-box {
+            background-color: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--dark-red);
+            margin: 20px 0;
+            border-right: 4px solid var(--primary-red);
+        }
+
+        .secret-box-icons {
+            font-size: 60px;
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .final-message {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--dark-red);
+            background-color: var(--gold);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* סגנונות למסך הנעילה */
+        input[type="text"] { 
+            padding: 10px; 
+            font-size: 16px; 
+            width: 100%; 
+            border: 2px solid var(--primary-red);
+            border-radius: 5px;
+            background-color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(211, 47, 47, 0.3);
+        }
+
+        button {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s, transform 0.1s;
+            margin-top: 15px;
+        }
+
+        button:hover { 
+            background-color: var(--dark-red); 
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #lockError {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .error { 
+            background-color: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+
+        #lock-screen {
+            text-align: center;
+        }
+
+        #roomCodeInput {
+            text-align: center;
+            font-size: 24px;
+            letter-spacing: 3px;
+            width: 60%;
+            margin: 15px auto;
+            display: block;
+        }
+
+        /* עיצוב להודעת השמע */
+        .audio-message {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            border: 1px solid #c8e6c9;
+        }
+
+        .audio-message p {
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container" id="lock-screen">
+    <h1 style="color: var(--primary-red);">עצרו!</h1>
+    <div class="subtitle">
+        כדי להיכנס לחדר הסיום, עליכם להזין את הקוד שקיבלתם בסיום חדר מספר 5.
+    </div>
+    <input type="text" id="roomCodeInput" placeholder="הזינו קוד כאן...">
+    <button onclick="checkEntryCode()">היכנסו לחדרון הסופי</button>
+    <div id="lockError" class="error">הקוד שגוי. נסו שוב!</div>
+</div>
+
+<div class="container" id="game-content" style="display: none;">
+    <h1>החדר הסופי: החדרונית! 🎉</h1>
+    <div class="subtitle">חינוך פיננסי</div>
+    
+    <div class="audio-message">
+        <p>🔊 רונית מחכה לכם עם הודעה מיוחדת:</p>
+        <audio id="ronitAudio" controls style="width: 100%;">
+            <source src="ronitRecord.mp4" type="audio/mp4">
+            הדפדפן שלכם אינו תומך בהשמעת קבצי קול.
+        </audio>
+    </div>
+
+    <div class="instructions">
+        <p>כל הכבוד אלופים! עברתם את כל המכשולים, הוכחתם ידע מרשים בלשון, והגעתם ליעד האחרון בהחלט.</p>
+        <p>כדי לסיים את המשחק ולפתוח את <span class="highlight">התיבה הסודית</span> שמחכה לכם ממש עכשיו בכיתה, תצטרכו להפעיל קצת כישורים פיננסיים ומתמטיים.</p>
+    </div>
+
+    <div class="gematria-box">
+        חברו יחד את כל המספרים ששמרתם מכל החדרים הקודמים.<br>
+        לסכום הזה, הוסיפו את הערך בגימטריה של המילה <strong>תקציב</strong>.
+    </div>
+
+    <div class="secret-box-icons">
+        <span>🧮</span>
+        <span class="pulse">🔐</span>
+        <span>📦</span>
+    </div>
+
+    <div class="final-message">
+        הסכום הסופי שתקבלו הוא הקוד שיפתח את המנעול.<br>
+        רוצו לתיבה, הזינו את הקוד וגלו מה מחכה לכם בפנים!
+    </div>
+</div>
+
+<script>
+    // פונקציה לבדיקת קוד הכניסה לחדרון הסיום
+    function checkEntryCode() {
+        const codeInput = document.getElementById('roomCodeInput').value.trim();
+        const lockError = document.getElementById('lockError');
+        
+        if (codeInput === '757') {
+            // הקוד נכון - מסתירים את מסך הנעילה ומציגים את חדר הסיום
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('game-content').style.display = 'block';
+            
+            // הפעלה אוטומטית של ההקלטה של רונית מיד עם הכניסה
+            document.getElementById('ronitAudio').play();
+        } else {
+            // הקוד שגוי - מציגים שגיאה
+            lockError.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>

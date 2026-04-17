@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המירוץ למילה - דף הבית</title>
+    <style>
+        :root {
+            --primary-red: #d32f2f;
+            --dark-red: #8e0000;
+            --light-red: #ff6659;
+            --bg-color: #ffebee;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-red) 0%, var(--primary-red) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            max-width: 700px;
+            width: 100%;
+            border-top: 6px solid var(--primary-red);
+            position: relative;
+        }
+
+        h1 { 
+            color: var(--dark-red); 
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 36px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .instructions-content {
+            background-color: #fafafa;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .instructions-content h2 {
+            color: var(--primary-red);
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .instructions-content p {
+            margin-bottom: 15px;
+            font-size: 17px;
+        }
+
+        .rooms-list {
+            background-color: var(--bg-color);
+            padding: 15px 30px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-right: 4px solid var(--dark-red);
+        }
+
+        .rooms-list ol {
+            margin: 0;
+            padding-right: 20px;
+            font-weight: bold;
+            color: var(--dark-red);
+            line-height: 1.8;
+        }
+
+        button {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s, transform 0.1s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        button:hover { 
+            background-color: var(--dark-red); 
+            box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* עיצוב לאליעזר בן יהודה */
+        #eliezer-section {
+            display: none;
+            text-align: center;
+            animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .speech-bubble {
+            position: relative;
+            background: #ffffff;
+            border: 3px solid var(--primary-red);
+            border-radius: 15px;
+            padding: 25px;
+            font-size: 20px;
+            line-height: 1.5;
+            color: var(--text-color);
+            font-weight: bold;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        /* החץ של בועת הדיבור */
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -23px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 20px 20px 0;
+            border-style: solid;
+            border-color: var(--primary-red) transparent transparent transparent;
+            display: block;
+            width: 0;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 17px 17px 0;
+            border-style: solid;
+            border-color: #ffffff transparent transparent transparent;
+            display: block;
+            width: 0;
+        }
+
+        .character-img {
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+        }
+
+        .highlight-text {
+            color: var(--primary-red);
+            font-size: 22px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-container">
+    
+    <div id="intro-section">
+        <h1>המירוץ למילה 🏃‍♂️📜</h1>
+        
+        <div class="instructions-content">
+            <p><strong>💼 תכולת המשחק:</strong> לוח הברקודים, תיבת העברית.</p>
+            <p><strong>👥 מספר משתתפים:</strong> מומלץ לעבוד בקבוצות של עד 4 תלמידים, כך שכולם יוכלו לחשוב, להשתתף ולהשפיע.</p>
+            <p><strong>🏆 המנצחים:</strong> הקבוצה הראשונה שתצליח לפתור את כל החידות, לאסוף את כל המספרים ולפתוח את התיבה הסודית!</p>
+            <p><strong>🎒 ציוד נדרש:</strong> טלפון נייד טעון, עוצמת השמע בינונית-גבוהה, ומצב רוח נהדר ועליז!</p>
+            
+            <h2>איך משחקים?</h2>
+            <p>לפניכם מסע בלשני מרתק. עליכם לעבור בין החדרים השונים. בכל חדר תתמודדו עם משימה מאתגרת, ורק פתרון נכון יעניק לכם מספר שמהווה <strong>חלק מהקוד הסודי</strong>. רשמו ושמרו את המספרים שאתם מקבלים בסוף כל חדר - בלעדיהם לא תוכלו לסיים את המשחק!</p>
+            
+            <div class="rooms-list">
+                <strong>תחנות המירוץ:</strong>
+                <ol>
+                    <li>משלימים (שם ופועל)</li>
+                    <li>צורת הבינוני</li>
+                    <li>קשרים לוגיים</li>
+                    <li>אוצר מילים</li>
+                    <li>מין ומספר</li>
+                    <li><strong>החדרונית - תחנה סופית!</strong></li>
+                </ol>
+            </div>
+        </div>
+
+        <button onclick="revealEliezer()">להתחלת המשחק - לחצו כאן!</button>
+    </div>
+
+    <div id="eliezer-section">
+        <div class="speech-bubble">
+            <span class="highlight-text">שלום י'1!</span><br><br>
+            אני אליעזר בן יהודה, מחייה השפה העברית!<br>
+            אני צריך את עזרתכם במשימה חשובה: <span style="color: #d32f2f;">איבדתי את הקוד הסודי לתיבת העברית שלי!</span><br><br>
+            אני צריך שתעזרו לי לפתור את כל החדרים. בכל חדר מסתתר רמז למספר מתוך הקוד הסודי שמתקבל לאחר פתירת החידה!<br>
+            סרקו את הברקודים וצאו לדרך, אני סומך עליכם שתעזרו לי!
+        </div>
+        
+        <img src="image_07bbdd.png" alt="אליעזר בן יהודה" class="character-img">
+    </div>
+
+</div>
+
+<script>
+    function revealEliezer() {
+        // הסתרת מסך ההוראות
+        document.getElementById('intro-section').style.display = 'none';
+        // הצגת אליעזר בן יהודה
+        document.getElementById('eliezer-section').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
